@@ -5,6 +5,8 @@
 //  Created by Anthony Cifre on 6/30/23.
 //
 
+import CoreLocation
+import CoreLocationUI
 import SwiftUI
 
 struct ContentView: View {
@@ -13,18 +15,18 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            if let currentWeather = weatherAPIClient.currentWeather {
+            if let currentWeather = weatherAPIClient.currentWeather, let currentCity = weatherAPIClient.convertedCity, let currentCountry = weatherAPIClient.convertedCountry   {
                 ZStack {
                     NavyBackgroundView()
                         .ignoresSafeArea()
 
                     VStack {
-                        WeatherView(currentWeather: currentWeather)
+                        WeatherView(currentWeather: currentWeather, currentCity: currentCity, currentCountry: currentCountry)
                             .padding([.horizontal, .top])
                     }
                 }
             } else {
-                ContentUnavailableView("Unable to load weather", systemImage: "cloud.rain")
+                ProgressView()
                 Button("Refresh", action: {
                     Task {
                         await weatherAPIClient.fetchWeather()
@@ -33,17 +35,17 @@ struct ContentView: View {
             }
         }
         .onAppear {
+            
             Task {
-                await weatherAPIClient.fetchWeather()
+                
+                await
+                weatherAPIClient.fetchWeather()
+
             }
         }
     }
 
 }
-
-
-
-
 
 #Preview {
     ContentView()

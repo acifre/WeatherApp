@@ -27,7 +27,11 @@ struct WeatherIntervals: Codable {
 
 struct WeatherValue: Codable {
     var temperature: Double
+    var temperatureApparent: Double
     var weatherCode: Int
+    var humidity: Double
+    var windSpeed: Double
+    var precipitationProbability: Double
 }
 
 enum WeatherCode: String, Codable {
@@ -131,5 +135,9 @@ struct Weather: Identifiable {
     let id = UUID()
 
     let temperature: Int
+    let temperatureApparent: Int
+    let humidity: Int
+    let windSpeed: Int
+    let precipitationProbability: Int
     let weatherCode: WeatherCode
 }
