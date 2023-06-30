@@ -38,7 +38,7 @@ struct WeatherView: View {
 
                 currentWeather.weatherCode.image
                     .font(.system(size: 150))
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(currentWeather.weatherCode.color)
                 VStack(spacing: 10) {
                     Text("\(currentWeather.temperature)°")
                         .font(.system(size: 100))

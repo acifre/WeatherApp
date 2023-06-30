@@ -96,6 +96,15 @@ enum WeatherCode: String, Codable {
             return "Try to stay inside!\n Thunderstorm alert!"
         }
     }
+    var color: Color {
+        switch self {
+        case .clear:
+            return Color.yellow
+        default:
+            return Color.white
+        }
+    }
+
 
     var image: Image {
         switch self {
