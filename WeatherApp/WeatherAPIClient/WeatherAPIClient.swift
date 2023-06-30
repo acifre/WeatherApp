@@ -5,11 +5,14 @@
 //  Created by Anthony Cifre on 6/30/23.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
+import SwiftUI
 
-final class WeatherAPIClient: NSObject, CLLocationManagerDelegate {
-    var currentWeather: WeatherValue?
+
+
+final class WeatherAPIClient: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var currentWeather: Weather?
 
     private let locationManager = CLLocationManager()
     private let dateFormatter = ISO8601DateFormatter()
@@ -32,8 +35,13 @@ final class WeatherAPIClient: NSObject, CLLocationManagerDelegate {
 
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            if let weatherResponse = try? JSONDecoder().decode(WeatherModel.self, from: data) {
-                currentWeather = weatherResponse.data.timelines.first?.intervals.first?.values
+            if let weatherResponse = try? JSONDecoder().decode(WeatherModel.self, from: data),
+               let weatherValue = weatherResponse.data.timelines.first?.intervals.first?.values,
+               let weatherCode = WeatherCode(rawValue: "\(weatherValue.weatherCode)") {
+                DispatchQueue.main.async { [weak self] in
+                    self?.currentWeather = Weather(temperature: Int(weatherValue.temperature),
+                                                   weatherCode: weatherCode)
+                }
             }
         } catch {
             // handle the error

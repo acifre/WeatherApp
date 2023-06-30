@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WeatherView: View {
+    var currentWeather: Weather
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -29,17 +31,17 @@ struct WeatherView: View {
                 }
                     .foregroundStyle(.white)
 
-                Image(systemName: "sun.max.fill")
+                currentWeather.weatherCode.image
                     .font(.system(size: 150))
                     .foregroundStyle(.yellow)
                 VStack {
-                    Text("95°")
+                    Text("\(currentWeather.temperature)°")
                         .font(.system(size: 100))
 
-                    Text("Sunny")
+                    Text(currentWeather.weatherCode.description)
                         .font(.title)
 
-                    Text("Friday, June 30")
+                    Text(Date.now, style: .date)
                         .font(.title3)
 
                 }
@@ -81,6 +83,6 @@ struct WeatherView: View {
     }
 }
 
-#Preview {
-    WeatherView()
-}
+//#Preview {
+//    WeatherView()
+//}
